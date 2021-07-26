@@ -100,6 +100,8 @@ StyleCopReport.xml
 *.svclog
 *.scc
 
+vscode
+
 # Chutzpah Test files
 _Chutzpah*
 
