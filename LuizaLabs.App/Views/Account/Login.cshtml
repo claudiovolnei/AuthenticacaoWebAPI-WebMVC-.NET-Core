@@ -1,0 +1,32 @@
+@model LuizaLabs.App.ValuesObjects.Usuario
+@{
+    ViewData["Title"] = "Sign in";
+}
+
+<h2>@ViewData["Title"]</h2>
+<div class="row">
+    <div class="col-md-3">
+        <form method="post" asp-controller="Account" asp-action="Logar">
+            <p>Entre com o endereço de <b>Email</b> <code>claudiovolneisilva@gmail.com</code> e a sem senha.</p>
+            <hr>
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="@Model.Email"></label>
+                <input asp-for="@Model.Email" class="form-control">
+                <span asp-validation-for="@Model.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Senha"></label>
+                <input asp-for="@Model.Senha" class="form-control">
+                <span asp-validation-for="@Model.Senha" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-default">Entrar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+@await Html.PartialAsync("_ValidationScriptsPartial")
+}
