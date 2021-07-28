@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Net.Http;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -6,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using LuizaLabs.Application.Models;
+using LuizaLabs.Application.ValuesObjects;
+using Newtonsoft.Json;
 
 namespace LuizaLabs.Application.Controllers
 {
@@ -20,6 +23,15 @@ namespace LuizaLabs.Application.Controllers
 
         public IActionResult Index()
         {
+            return View();
+        }
+
+        public async Task<IActionResult> Login([FromBody] Usuario usuario)
+        {
+            HttpClient client = new HttpClient();
+            HttpResponseMessage response = await client.GetAsync("http://www.contoso.com/");
+            var responseBody = JsonConvert.DeserializeObject<Usuario>(await response.Content.ReadAsStringAsync());
+
             return View();
         }
 

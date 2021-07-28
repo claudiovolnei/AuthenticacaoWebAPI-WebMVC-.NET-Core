@@ -23,9 +23,10 @@ namespace LuizaLabs.Application
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(1);//You can set Time   
+                options.IdleTimeout = TimeSpan.FromSeconds(10);//You can set Time   
             });
             services.AddControllersWithViews();
         }
