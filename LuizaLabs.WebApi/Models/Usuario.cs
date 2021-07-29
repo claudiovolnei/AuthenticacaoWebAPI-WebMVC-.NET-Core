@@ -15,13 +15,13 @@ namespace LuizaLabs.WebApi.Models
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; private set; }
+        public Guid Id { get; set; }
         [Display(Name = "Nome")]
-        public string Nome { get; private set; }
+        public string Nome { get; set; }
         [Display(Name = "E-mail")]
-        public string Email { get; private set; }
+        public string Email { get; set; }
         [Display(Name = "Senha")]
-        public string Senha { get; private set; }
+        public string Senha { get; set; }
         [NotMapped]
         public string Token { get; set; }
     }

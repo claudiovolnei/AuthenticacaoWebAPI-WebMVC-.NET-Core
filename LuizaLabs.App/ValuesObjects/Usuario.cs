@@ -15,12 +15,12 @@ namespace LuizaLabs.App.ValuesObjects
         public string Email { get; set; }
         [Display(Name = "Senha")]
         [Required(ErrorMessage = "Senha usuário obrigatório.")]
-        [StringLength(255, ErrorMessage = "Senha deve conter de 8 à 255 caracteres.", MinimumLength = 8)]
+        [StringLength(255, ErrorMessage = "Senha deve conter no minimo 8 caracteres.", MinimumLength = 8)]
         [DataType(DataType.Password)]
         public string Senha { get; set; }
         [Display(Name = "Confirmar Senha")]
         [Required(ErrorMessage = "Confirmação de senha obrigatório.")]
-        [StringLength(255, ErrorMessage = "Senha deve conter de 8 à 255 caracteres.", MinimumLength = 8)]
+        [StringLength(255, ErrorMessage = "Senha deve conter no minimo 8 caracteres.", MinimumLength = 8)]
         [DataType(DataType.Password)]
         [Compare("Senha")]
         public string ConfirmaSenha { get; set; }

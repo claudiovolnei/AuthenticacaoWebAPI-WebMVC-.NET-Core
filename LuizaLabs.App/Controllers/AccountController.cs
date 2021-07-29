@@ -14,6 +14,7 @@ using LuizaLabs.App.Services.Interface;
 using LuizaLabs.App.Util;
 using Coravel.Mailer.Mail.Interfaces;
 using LuizaLabs.App.Services;
+using LuizaLabs.App.ViewModels;
 
 namespace LuizaLabs.App.Controllers
 {
@@ -36,6 +37,18 @@ namespace LuizaLabs.App.Controllers
         public IActionResult RecuperarSenha()
         {
             return View();
+        }
+
+        public async Task<IActionResult> AlterarSenha(Guid id)
+        {
+            var result = await _accountService.RecuperaSenhaId(id);
+            if (!result.Status)
+            {
+                ViewBag.Result = "Recuperação de senha expirou ou esta invalida!";
+                return View();
+            }
+
+            return View(result.Dados);
         }
         public IActionResult Register()
         {
@@ -76,6 +89,40 @@ namespace LuizaLabs.App.Controllers
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
                 return View("Register");
+            }
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> AlterarSenha(UsuarioAlteracaoSenha usuarioAlteracaoSenha)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var result = await _accountService.EnviarSenhaNova(usuarioAlteracaoSenha);
+
+                    if (!result.Status)
+                    {
+                        ModelState.AddModelError(string.Empty, result.Mensagem);
+                        return View("AlterarSenha");
+                    }
+                    else
+                    {
+                        ViewBag.Mensagem = result.Mensagem;
+                        return View("Login");
+                    }
+                }
+                else
+                {
+                    var errors = from modelstate in ModelState.AsQueryable().Where(f => f.Value.Errors.Count > 0) select new { Title = modelstate.Key };
+                    ModelState.AddModelError(string.Empty, errors.ToString());
+                    return View("Register");
+                }
+            }
+            catch (System.Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View("AlterarSenha");
             }
 
         }
@@ -136,6 +183,33 @@ namespace LuizaLabs.App.Controllers
                     result.Dados.Email, DateTime.UtcNow);
 
                 return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                var errors = from modelstate in ModelState.AsQueryable().Where(f => f.Value.Errors.Count > 0) select new { Title = modelstate.Key };
+                ModelState.AddModelError(string.Empty, errors.ToList().ToString());
+                return View("Login");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RecuperarSenha(UsuarioRecuperacaoSenha usuarioRecuperacaoSenha)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _accountService.RecuperarSenha(usuarioRecuperacaoSenha);
+
+                if (!result.Status)
+                {
+                    ModelState.AddModelError(string.Empty, result.Mensagem);
+                    return View("RecuperarSenha");
+                }
+                else
+                {
+                    await this._mailer.SendAsync(new SendEmail(result));
+                    ViewBag.Result = "Confirmação de senha enviado por e-mail.";
+                    return View("RecuperarSenha");
+                }
             }
             else
             {
