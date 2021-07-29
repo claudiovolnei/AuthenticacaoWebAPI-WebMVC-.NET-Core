@@ -33,6 +33,10 @@ namespace LuizaLabs.App.Controllers
         {
             return View();
         }
+        public IActionResult RecuperarSenha()
+        {
+            return View();
+        }
         public IActionResult Register()
         {
             if (User.Identity.IsAuthenticated)
@@ -77,7 +81,7 @@ namespace LuizaLabs.App.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Logar(Usuario usuario)
+        public async Task<IActionResult> Logar(UsuarioLogin usuario)
         {
             if (ModelState.IsValid)
             {
@@ -136,7 +140,7 @@ namespace LuizaLabs.App.Controllers
             else
             {
                 var errors = from modelstate in ModelState.AsQueryable().Where(f => f.Value.Errors.Count > 0) select new { Title = modelstate.Key };
-                ModelState.AddModelError(string.Empty, errors.ToString());
+                ModelState.AddModelError(string.Empty, errors.ToList().ToString());
                 return View("Login");
             }
         }

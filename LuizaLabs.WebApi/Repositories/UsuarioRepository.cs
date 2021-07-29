@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LuizaLabs.WebApi.Data;
@@ -12,6 +13,10 @@ namespace LuizaLabs.WebApi.Repositories
         public void Add<T>(T entity) where T : class
         {
             _context.Add(entity);
+        }
+        public void Update<T>(T entity) where T : class
+        {
+            _context.Update(entity);
         }
         public async Task<bool> SaveChangesAsync()
         {
@@ -30,6 +35,15 @@ namespace LuizaLabs.WebApi.Repositories
                                              .Where(u => u.Email == usuario.Email && u.Senha == usuario.Senha);
 
             return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<Usuario> GetUsuarioId(Guid id)
+        {
+            return await _context.Usuarios.AsNoTracking().Where(user => user.Id == id).FirstOrDefaultAsync();
+        }
+        public async Task<Usuario> GetUsuarioEmail(string email)
+        {
+            return await _context.Usuarios.AsNoTracking().Where(user => user.Email == email).FirstOrDefaultAsync();
         }
     }
 }

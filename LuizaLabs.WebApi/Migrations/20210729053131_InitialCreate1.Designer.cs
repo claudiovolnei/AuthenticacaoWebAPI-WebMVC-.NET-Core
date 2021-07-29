@@ -4,14 +4,16 @@ using LuizaLabs.WebApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LuizaLabs.WebApi.Migrations
 {
     [DbContext(typeof(LuizaLabsDbContext))]
-    partial class LuizaLabsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210729053131_InitialCreate1")]
+    partial class InitialCreate1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

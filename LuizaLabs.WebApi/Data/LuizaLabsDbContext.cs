@@ -10,5 +10,6 @@ namespace LuizaLabs.WebApi.Data
         { }
 
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<RecuperacaoSenhaUsuario> RecuperacaoSenhaUsuario { get; set; }
     }
 }

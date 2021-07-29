@@ -1,4 +1,4 @@
-@model LuizaLabs.App.ValuesObjects.Usuario
+@model LuizaLabs.App.Models.UsuarioLogin
 @{
     ViewData["Title"] = "Acessar";
 }
@@ -21,7 +21,7 @@
                 <span asp-validation-for="@Model.Senha" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <a href="#">Esqueceu a senha ?</a>
+                <a asp-controller="Account" asp-action="RecuperarSenha">Esqueceu a senha ?</a>
 
             </div>
             <div class="form-group">
@@ -37,6 +37,8 @@
     $(document).ready(function () {
         if ('@ViewBag.Mensagem' != '')
             $.alert('@ViewBag.Mensagem', "Sucesso");
+
+        console.log('@ViewBag.Mensagem');
     });
 </script>
 }

@@ -34,6 +34,7 @@ namespace LuizaLabs.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<IRecuperaSenhaRepository, RecuperaSenhaRepository>();
             services.AddEntityFrameworkSqlServer();
             services.AddDbContextPool<LuizaLabsDbContext>(options =>
           options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));

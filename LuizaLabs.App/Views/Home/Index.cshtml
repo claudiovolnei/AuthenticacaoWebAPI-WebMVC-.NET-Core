@@ -2,10 +2,12 @@
 {
     <div class="row">
         <div class="col-md-12">
-            <h1>Hello @User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value!</h1>
-            <p>Username: @User.Identity.Name</p>
+            <h1>Bem vindo, @User.Claims.FirstOrDefault(c => c.Type == "Nome")?.Value!</h1>
+            <p>Email: @User.Identity.Name</p>
         </div>
     </div>
 }
-
-<h1>Cookie Sample</h1>
+else
+{
+    <h1>Bem vindo, ao sistema de autenticação LuizaLabs!</h1>
+}
