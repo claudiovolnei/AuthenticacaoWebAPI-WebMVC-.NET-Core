@@ -10,45 +10,89 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using LuizaLabs.App.ValuesObjects;
 using System.Security.Claims;
+using LuizaLabs.App.Services.Interface;
+using LuizaLabs.App.Util;
+using Coravel.Mailer.Mail.Interfaces;
+using LuizaLabs.App.Services;
 
 namespace LuizaLabs.App.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IMailer _mailer;
         private readonly ILogger<AccountController> _logger;
+        private readonly IAccountService _accountService;
 
-        public AccountController(ILogger<AccountController> logger)
+        public AccountController(ILogger<AccountController> logger, IAccountService accountService, IMailer mailer)
         {
+            _mailer = mailer;
+            _accountService = accountService;
             _logger = logger;
         }
         public IActionResult Login()
         {
             return View();
         }
+        public IActionResult Register()
+        {
+            if (User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Home");
+            return View();
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> Register(Usuario usuario)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var result = await _accountService.Registrar(usuario);
+
+                    if (!result.Status)
+                    {
+                        ModelState.AddModelError(string.Empty, result.Mensagem);
+                        return View("Register");
+                    }
+                    else
+                    {
+                        await this._mailer.SendAsync(new SendEmail(result));
+                        ViewBag.Mensagem = result.Mensagem;
+                        return RedirectToAction("Login");
+                    }
+                }
+                else
+                {
+                    var errors = from modelstate in ModelState.AsQueryable().Where(f => f.Value.Errors.Count > 0) select new { Title = modelstate.Key };
+                    ModelState.AddModelError(string.Empty, errors.ToString());
+                    return View("Register");
+                }
+            }
+            catch (System.Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View("Register");
+            }
+
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Logar(Usuario usuario)
         {
             if (ModelState.IsValid)
             {
-                // Use Input.Email and Input.Password to authenticate the user
-                // with your custom authentication logic.
-                //
-                // For demonstration purposes, the sample validates the user
-                // on the email address maria.rodriguez@contoso.com with 
-                // any password that passes model validation.
+                var result = await _accountService.Autenticar(usuario);
 
-                var user = await AuthenticateUser(usuario);
-
-                if (user == null)
+                if (!result.Status)
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, result.Mensagem);
                     return View("Login");
                 }
 
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.Email),
-                    new Claim("Nome", user.Nome),
+                    new Claim(ClaimTypes.Name, result.Dados.Email),
+                    new Claim("Nome", result.Dados.Nome),
                     new Claim(ClaimTypes.Role, "Administrator"),
                 };
 
@@ -85,13 +129,16 @@ namespace LuizaLabs.App.Controllers
                     authProperties);
 
                 _logger.LogInformation("User {Email} logged in at {Time}.",
-                    user.Email, DateTime.UtcNow);
+                    result.Dados.Email, DateTime.UtcNow);
 
                 return RedirectToAction("Index", "Home");
             }
-
-            return RedirectToAction("Login", "Account");
-
+            else
+            {
+                var errors = from modelstate in ModelState.AsQueryable().Where(f => f.Value.Errors.Count > 0) select new { Title = modelstate.Key };
+                ModelState.AddModelError(string.Empty, errors.ToString());
+                return View("Login");
+            }
         }
 
         public async Task<IActionResult> Logout()
@@ -100,28 +147,6 @@ namespace LuizaLabs.App.Controllers
                 CookieAuthenticationDefaults.AuthenticationScheme);
 
             return RedirectToAction("Login");
-        }
-
-        private async Task<Usuario> AuthenticateUser(Usuario usuario)
-        {
-            // For demonstration purposes, authenticate a user
-            // with a static email address. Ignore the password.
-            // Assume that checking the database takes 500ms
-
-            await Task.Delay(500);
-
-            if (usuario.Email == "claudiovolneisilva@gmail.com")
-            {
-                return new Usuario()
-                {
-                    Email = "claudiovolneisilva@gmail.com",
-                    Nome = "Claudio Volnei"
-                };
-            }
-            else
-            {
-                return null;
-            }
         }
     }
 }

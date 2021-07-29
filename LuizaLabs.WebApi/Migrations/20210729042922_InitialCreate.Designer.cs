@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LuizaLabs.WebApi.Migrations
 {
     [DbContext(typeof(LuizaLabsDbContext))]
-    [Migration("20210726015702_InitialCreate")]
+    [Migration("20210729042922_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
