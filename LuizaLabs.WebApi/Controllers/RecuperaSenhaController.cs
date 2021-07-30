@@ -54,7 +54,7 @@ namespace LuizaLabs.WebApi.Controllers
                     {
                         result.Status = true;
                         result.Mensagem = "Recuperação de senha criada com sucesso!<br> " +
-                        "Acessar : " + _config["UrlApp"] + " /Account/AlterarSenha?Id=" + recuperacaoSenha.Id;
+                        "Acessar : " + _config["UrlApp"] + "Account/AlterarSenha?Id=" + recuperacaoSenha.Id;
                         result.Dados = recuperacaoSenha;
                         return Ok(result);
                     }
