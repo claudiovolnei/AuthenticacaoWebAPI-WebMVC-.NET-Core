@@ -48,7 +48,7 @@ namespace LuizaLabs.WebApi.Controllers
                 {
                     result.Status = false;
                     result.Dados = null;
-                    result.Mensagem = "Usuário e senha não encontrado!";
+                    result.Mensagem = "Usuário ou senha inválidos!";
                     return Unauthorized(result);
                 }
             }
