@@ -30,7 +30,7 @@ namespace LuizaLabs.WebApi.Repositories
 
         public async Task<RecuperacaoSenhaUsuario> GetRecuperaSenhaId(Guid id)
         {
-            return await _context.RecuperacaoSenhaUsuario.AsNoTracking().Where(r => r.Id == id).FirstOrDefaultAsync();
+            return await _context.RecuperacaoSenhaUsuario.AsNoTracking().Where(r => r.Id == id && r.Ativa).FirstOrDefaultAsync();
         }
     }
 }

@@ -108,15 +108,18 @@ namespace LuizaLabs.App.Controllers
                     }
                     else
                     {
-                        ViewBag.Mensagem = result.Mensagem;
-                        return View("Login");
+                        ViewBag.Result = result.Mensagem;
+                        return View("AlterarSenha");
                     }
                 }
                 else
                 {
-                    var errors = from modelstate in ModelState.AsQueryable().Where(f => f.Value.Errors.Count > 0) select new { Title = modelstate.Key };
-                    ModelState.AddModelError(string.Empty, errors.ToString());
-                    return View("Register");
+                    string erros = string.Join("<br>", ModelState.Values.Where(e => e.Errors.Count > 0)
+                                                                            .SelectMany(e => e.Errors)
+                                                                            .Select(e => e.ErrorMessage)
+                                                                            .ToArray());
+                    ModelState.AddModelError(string.Empty, erros);
+                    return View("AlterarSenha");
                 }
             }
             catch (System.Exception ex)
@@ -186,8 +189,11 @@ namespace LuizaLabs.App.Controllers
             }
             else
             {
-                var errors = from modelstate in ModelState.AsQueryable().Where(f => f.Value.Errors.Count > 0) select new { Title = modelstate.Key };
-                ModelState.AddModelError(string.Empty, errors.ToList().ToString());
+                string erros = string.Join("<br>", ModelState.Values.Where(e => e.Errors.Count > 0)
+                                                                            .SelectMany(e => e.Errors)
+                                                                            .Select(e => e.ErrorMessage)
+                                                                            .ToArray());
+                ModelState.AddModelError(string.Empty, erros);
                 return View("Login");
             }
         }
@@ -213,8 +219,11 @@ namespace LuizaLabs.App.Controllers
             }
             else
             {
-                var errors = from modelstate in ModelState.AsQueryable().Where(f => f.Value.Errors.Count > 0) select new { Title = modelstate.Key };
-                ModelState.AddModelError(string.Empty, errors.ToList().ToString());
+                string erros = string.Join("<br>", ModelState.Values.Where(e => e.Errors.Count > 0)
+                                                                            .SelectMany(e => e.Errors)
+                                                                            .Select(e => e.ErrorMessage)
+                                                                            .ToArray());
+                ModelState.AddModelError(string.Empty, erros);
                 return View("Login");
             }
         }

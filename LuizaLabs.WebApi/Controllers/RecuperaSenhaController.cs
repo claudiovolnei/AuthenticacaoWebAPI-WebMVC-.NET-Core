@@ -54,7 +54,7 @@ namespace LuizaLabs.WebApi.Controllers
                     {
                         result.Status = true;
                         result.Mensagem = "Recuperação de senha criada com sucesso!<br> " +
-                        "Acessar : http://localhost:5556/Account/AlterarSenha?Id=" + recuperacaoSenha.Id;
+                        "Acessar : " + _config["UrlApp"] + " /Account/AlterarSenha?Id=" + recuperacaoSenha.Id;
                         result.Dados = recuperacaoSenha;
                         return Ok(result);
                     }
@@ -93,7 +93,7 @@ namespace LuizaLabs.WebApi.Controllers
             {
 
                 var recuperacaoSenha = await _recuperaSenhaRepository.GetRecuperaSenhaId(recuperacaoSenhaUsuario.Id);
-                if (recuperacaoSenha != null)
+                if (recuperacaoSenha == null)
                 {
                     result.Status = false;
                     result.Mensagem = "Recuperação não encontrada!";
@@ -103,6 +103,7 @@ namespace LuizaLabs.WebApi.Controllers
                 {
                     recuperacaoSenha.SenhaNova = recuperacaoSenhaUsuario.SenhaNova;
                     recuperacaoSenha.ConfirmacaoSenhaNova = recuperacaoSenhaUsuario.ConfirmacaoSenhaNova;
+                    recuperacaoSenha.Ativa = false;
                     _recuperaSenhaRepository.Update(recuperacaoSenha);
                     if (await _recuperaSenhaRepository.SaveChangesAsync())
                     {

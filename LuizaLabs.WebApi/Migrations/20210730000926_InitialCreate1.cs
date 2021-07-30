@@ -8,6 +8,20 @@ namespace LuizaLabs.WebApi.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Usuarios",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Senha = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usuarios", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RecuperacaoSenhaUsuario",
                 columns: table => new
                 {
@@ -40,6 +54,9 @@ namespace LuizaLabs.WebApi.Migrations
         {
             migrationBuilder.DropTable(
                 name: "RecuperacaoSenhaUsuario");
+
+            migrationBuilder.DropTable(
+                name: "Usuarios");
         }
     }
 }

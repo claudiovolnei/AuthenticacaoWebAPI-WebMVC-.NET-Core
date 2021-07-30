@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuizaLabs.WebApi", "LuizaLabs.WebApi\LuizaLabs.WebApi.csproj", "{0326843B-629B-49F7-BDB5-F7CFC86BE9F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuizaLabs.Application", "LuizaLabs.Application\LuizaLabs.Application.csproj", "{3B449C3B-4DEB-4B85-B1EF-E7274BB4E1D8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuizaLabs.App", "LuizaLabs.App\LuizaLabs.App.csproj", "{5B926811-769D-4E02-A328-132A42FB1F9B}"
 EndProject
 Global
